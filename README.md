@@ -28,6 +28,6 @@ AWS:
 ---
 ## Bonus points
 After fixing any issues and making any improvements you would like to see,
-write another terraform file that would run this as a one-off task in ecs.
+write another terraform file that would run this as a one-off task in ecs (fargate).
 
 Take screenshots of the task running with its log output, and commit those to your repo as well.
