@@ -20,6 +20,7 @@ AWS:
 ## Instructions
 
 1. Fork this repo into your own GitHub
+1. Complete as much of the exercise as you can - best effort counts!
 1. Identify as many problems as you can find with any file in the repo
 1. Identify any improvements you would make, either by making them or commenting with the intended change(s)
 1. Write a script `./deploy.sh` that can be executed to easily deploy this to AWS
