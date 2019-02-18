@@ -1,0 +1,6 @@
+version: "3"
+services:
+  exercise:
+    build: .
+    volumes:
+      - ~/.aws:/root/.aws
