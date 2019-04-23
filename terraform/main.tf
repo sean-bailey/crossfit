@@ -36,13 +36,13 @@ template = "${file("./files/task-policy.json")}"
 }
 
 resource "aws_iam_policy" "task-policy" {
-name = "${local.function_name}-lambda-task"
+name = "${local.function_name}-policy"
 description = "Task Policy"
 policy = "${data.template_file.lambda_task_policy.rendered}"
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "${local.function_name}-lambda"
+  name = "${local.function_name}-lambda-role"
 
   assume_role_policy = "${data.template_file.lambda_assume_policy.rendered}"
   depends_on = [
