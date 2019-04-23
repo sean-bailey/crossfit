@@ -1,5 +1,6 @@
-FROM python:3.7-alpine
+FROM python:2.7-alpine
 ADD requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+ADD lambda_function.py /app/lambda_function.py
+RUN pip install -r /app/requirements.txt
 ADD . /app
-ENTRYPOINT ["python3" "lambda_function.py"]
+ENTRYPOINT ["python", "/app/lambda_function.py"]

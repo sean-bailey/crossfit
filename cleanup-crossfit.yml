@@ -1,0 +1,31 @@
+---
+#
+- name:                              clean up the resources from the kb4sre-exercise
+  hosts:                             localhost
+  connection:                        local
+  tasks:
+
+    - name:                          clean up lambda function
+      lambda:
+        region:                      "{{target_region}}"
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        name:                        'kb4sre-exercise'
+        state:                       absent
+
+    - name:                          clean up policy
+      iam_policy:
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        iam_type:                    role
+        iam_name:                    kb4sre-exercise-lambda-role
+        policy_name:                 kb4sre-exercise-policy
+        state:                       absent
+
+    - name:                          clean up lambda role
+      iam_role:
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        name:                        kb4sre-exercise-lambda-role
+        assume_role_policy_document: "{{ lookup('file','./terraform/files/assume-policy.json') }}"
+        state:                       absent
