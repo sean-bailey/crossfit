@@ -69,6 +69,9 @@
           app:                       'test'
           environment:               'test'
           service:                   'test'
+    - name: give AWS a few seconds to allow the settings to propogate
+      pause:
+        seconds: 10
 
     - name:                          run the lambda function
       execute_lambda:
