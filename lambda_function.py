@@ -25,7 +25,7 @@ def lambda_handler(event, context):
         log_group['storedBytes'] for log_group in response['logGroups'] if log_group['logGroupName'] == LOG_GROUP_NAME]
     data = {
         'ip': ip,
-        'log_group_size': (float(list_of_selected_log_group_size_in_bytes[0]) / 1024)
+        'log_group_size': hex((list_of_selected_log_group_size_in_bytes[0]) / 1024)
     }
     # int has no attribute hex
     return json.dumps(data)

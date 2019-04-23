@@ -73,7 +73,7 @@
     - name:                          give AWS a few seconds to allow the settings to propogate
       pause:
         seconds:                     30
-
+    #Note the above fix doesn't always work. Occasionally AWS just doesn't register the role is connected to the lambda function for a couple minutes. 80/20
     - name:                          run the lambda function
       execute_lambda:
         aws_access_key:              "{{access_key}}"
