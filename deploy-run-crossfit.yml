@@ -1,0 +1,87 @@
+---
+#
+- name:                              deploy the kb4sre-exercise lambda function with the appropriate IAM roles/policies, then execute it.
+  hosts:                             localhost
+  connection:                        local
+  tasks:
+    #to follow least permissions principle, make a tighter policy doc
+    - name:                          create temporary copy of policy document
+      copy:
+        src:                         ./terraform/files/task-policy-ansible.json
+        dest:                        ./task-policy-ansible-temp.json
+    - name:                          Replace the appropriate values in the policy document
+      replace:
+        path:                        ./task-policy-ansible-temp.json
+        regexp:                      '<region>'
+        replace:                     "{{target_region}}"
+    - name:                          Replace the appropriate values in the policy document
+      replace:
+        path:                        ./task-policy-ansible-temp.json
+        regexp:                      '<account>'
+        replace:                     "{{account_id}}"
+    - name:                          Replace the appropriate values in the policy document
+      replace:
+        path:                        ./task-policy-ansible-temp.json
+        regexp:                      '<functionname>'
+        replace:                     'kb4sre-exercise'
+
+    - name:                          create lambda role
+      iam_role:
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        name:                        kb4sre-exercise-lambda-role
+        assume_role_policy_document: "{{ lookup('file','./terraform/files/assume-policy.json') }}"
+        description:                 Role for kb4sre-exercise lambda function
+        validate_certs:              no
+      register:                      lambda-role
+
+    - name:                          create IAM policy for the lambda
+      iam_policy:
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        iam_type:                    role
+        iam_name:                    kb4sre-exercise-lambda-role
+        policy_name:                 kb4sre-exercise-policy
+        state:                       present
+        policy_document:             './task-policy-ansible-temp.json'
+        validate_certs:              no
+
+    - name:                          clean up temp file
+      file:
+        path:                        ./task-policy-ansible-temp.json
+        state:                       absent
+
+    - name:                          create lambda function
+      lambda:
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        region:                      "{{target_region}}"
+        name:                        'kb4sre-exercise'
+        state:                       present
+        zip_file:                    './lambda.zip'
+        #due to ansible officially supporting Current example runtime environments are nodejs, nodejs4.3, java8 or python2.7, I'll just make everything python2.7 and make it 3.x compatible ezpz
+        runtime:                     'python2.7'
+        timeout:                     10
+        role:                        kb4sre-exercise-lambda-role
+        handler:                     'lambda_function.lambda_handler'
+        tags:
+          ansible:                   'true'
+          app:                       'test'
+          environment:               'test'
+          service:                   'test'
+
+    - name:                          run the lambda function
+      execute_lambda:
+        aws_access_key:              "{{access_key}}"
+        aws_secret_key:              "{{secret_key}}"
+        region:                      "{{target_region}}"
+        name:                        'kb4sre-exercise'
+        payload:
+          event:                     None
+          context:                   None
+      register:                      lambda_response
+      ignore_errors:                 yes
+
+    - name:                          return the lambda response
+      debug:
+        msg:                         "{{lambda_response['result']['output']}}"
