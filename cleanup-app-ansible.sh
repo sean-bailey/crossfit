@@ -6,6 +6,8 @@ echo ""
 
 read -p "Enter the region app was deployed in: " region_name
 
+pip install -U ansible
+
 
 ansible-playbook cleanup-crossfit.yml \
   -e "target_region=$region_name"\

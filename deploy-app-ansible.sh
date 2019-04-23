@@ -7,8 +7,10 @@ echo ""
 read -p "Enter the region to deploy in: " region_name
 read -p "Enter the account ID: " account_id
 
+pip install -U ansible
+echo "Zipping up function..."
 sh zip.sh &>/dev/null
-
+echo "Running playbook"
 ansible-playbook deploy-run-crossfit.yml \
   -e "target_region=$region_name"\
   -e "access_key=$access_key"\

@@ -7,7 +7,7 @@
 
     - name:                          clean up lambda function
       lambda:
-        region: "{{target_region}}"
+        region:                      "{{target_region}}"
         aws_access_key:              "{{access_key}}"
         aws_secret_key:              "{{secret_key}}"
         name:                        'kb4sre-exercise'

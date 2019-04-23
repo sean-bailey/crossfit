@@ -14,7 +14,18 @@ Locally:
 * `docker-compose run exercise`
 
 AWS:
-* TODO: Create a script `./deploy.sh` to deploy the app to AWS.
+To deploy the app, simply run
+
+`sh deploy-app-ansible.sh`
+
+When prompted, plug in your Access Key ID, Secret Key, region and
+account id, and the scripts will do the rest.
+
+If you want to undeploy/decommission the application, run
+
+`sh cleanup-app-ansible.sh`
+
+and follow the appropriate prompts.
 
 ---
 ## Instructions
