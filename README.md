@@ -14,18 +14,26 @@ Locally:
 * `docker-compose run exercise`
 
 AWS:
-To deploy the app, simply run
+To deploy the app using ansible, simply run
 
 `sh deploy-app-ansible.sh`
 
 When prompted, plug in your Access Key ID, Secret Key, region and
 account id, and the scripts will do the rest.
 
+To deploy the app using Terraform, run
+
+`sh deploy.sh`
+
+and follow the appropriate prompts.
+
 If you want to undeploy/decommission the application, run
 
 `sh cleanup-app-ansible.sh`
 
 and follow the appropriate prompts.
+
+(All of these must be run from the root of this repo)
 
 ---
 ## Instructions
